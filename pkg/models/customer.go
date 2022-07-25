@@ -30,7 +30,7 @@ func init() {
 }
 
 func (c *Customer) CreateCustomer() *Customer {
-	db.NewRecord(c) //new record comes with the gorm and it creates a new record for the order
+	db.NewRecord(c) //new record comes with the gorm, and it creates a new record for the order
 	db.Create(&c)
 	return c
 }
@@ -43,7 +43,7 @@ func GetAllCustomers() []Customer {
 
 func GetCustomerById(ID int64) (*Customer, *gorm.DB) {
 	var getCustomer Customer
-	db := db.Where("ID = ?", ID).Find(&getCustomer)
+	db := db.Debug().Where("ID = ?", ID).Preload("Orders").Find(&getCustomer)
 	return &getCustomer, db
 }
 
@@ -55,6 +55,6 @@ func DeleteCustomer(ID int64) Customer {
 
 func GetAll(db *gorm.DB) ([]Customer, error) {
 	var customers []Customer
-	err := db.Model(&Customer{}).Preload("Orders").Find(&customers).Error
+	err := db.Debug().Model(&Customer{}).Preload("Orders").Find(&customers).Error
 	return customers, err
 }

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/mux"
+	"github.com/shadheeraNa/go-customermanagement/pkg/config"
 	"github.com/shadheeraNa/go-customermanagement/pkg/models"
 	"github.com/shadheeraNa/go-customermanagement/pkg/utils"
 	"net/http"
@@ -22,7 +23,8 @@ func CreateCustomer(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetCustomer(w http.ResponseWriter, r *http.Request) {
-	newCustomers := models.GetAllCustomers()
+	newCustomers, _ := models.GetAll(config.GetDB())
+	//newCustomers := models.GetAllCustomers()
 	res, _ := json.Marshal(newCustomers)
 	w.Header().Set("Content-Type", "pkglication/json")
 	w.WriteHeader(http.StatusOK)
